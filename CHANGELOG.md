@@ -7,6 +7,7 @@ current (development)
 ### Component
 - Feature: Add support for `Input`'s insert mode. Add `InputOption::insert`
   option. Added by @mingsheng13.
+- Feature: Add `DropdownOption` to configure the dropdown. See #826.
 - Bugfix/Breaking change: `Mouse transition`:
   - Detect when the mouse move, as opposed to being pressed.
     The Mouse::Moved motion was added.
@@ -23,6 +24,8 @@ current (development)
 - Bugfix: `Input` `onchange` was not called on backspace or delete key.
   Fixed by @chrysante in chrysante in PR #776.
 - Bugfix: Propertly restore cursor shape on exit. See #792.
+- Bugfix: Fix cursor position in when in the last column. See #831.
+- Bugfix: Fix `ResizeableSplit` keyboard navigation. Fixed by #842.
 
 ### Dom
 - Feature: Add `hscroll_indicator`. It display an horizontal indicator
