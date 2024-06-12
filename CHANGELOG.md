@@ -5,6 +5,14 @@ current (development)
 ---------------------
 
 ### Component
+- Feature: Add support for raw input. Allowing more keys to be detected.
+- Feature: Add `ScreenInteractive::ForceHandleCtrlC(false)` to allow component
+  to fully override the default `Ctrl+C` handler.
+- Feature: Add `ScreenInteractive::ForceHandleCtrlZ(false)` to allow component
+  to fully override the default `Ctrl+Z` handler.
+- Feature: Add `Mouse::WeelLeft` and `Mouse::WeelRight` events on supported
+  terminals.
+- Feature: Add `Event::DebugString()`.
 - Feature: Add support for `Input`'s insert mode. Add `InputOption::insert`
   option. Added by @mingsheng13.
 - Feature: Add `DropdownOption` to configure the dropdown. See #826.
@@ -26,11 +34,18 @@ current (development)
 - Bugfix: Propertly restore cursor shape on exit. See #792.
 - Bugfix: Fix cursor position in when in the last column. See #831.
 - Bugfix: Fix `ResizeableSplit` keyboard navigation. Fixed by #842.
+- Bugfix: Fix `Menu` focus. See #841
 
 ### Dom
 - Feature: Add `hscroll_indicator`. It display an horizontal indicator
   reflecting the current scroll position. Proposed by @ibrahimnasson in
   [issue 752](https://github.com/ArthurSonzogni/FTXUI/issues/752)
+
+### Screen
+- Feature: Add `Box::IsEmpty()`.
+
+### Util
+- Feature: Support arbitrary `Adapter` for `ConstStringListRef`. See #843.
 
 ### Build
 - Support for cmake's "unity/jumbo" builds. Fixed by @ClausKlein.
