@@ -296,6 +296,7 @@ Prebuilt components are declared in [<ftxui/component/component.hpp>](https://ar
 - *Want to share a useful Component for FTXUI? Feel free to add yours here*
 - [ftxui-grid-container](https://github.com/mingsheng13/grid-container-ftxui)
 - [ftxui-ip-input](https://github.com/mingsheng13/ip-input-ftxui)
+- [ftxui-image-view](https://github.com/ljrrjl/ftxui-image-view.git): For Image Display.
 
 
 ## Project using FTXUI
@@ -334,6 +335,7 @@ Feel free to add your projects here:
 - [Caravan](https://github.com/r3w0p/caravan)
 - [Step-Writer](https://github.com/BrianAnakPintar/step-writer)
 - [XJ music](https://github.com/xjmusic/xjmusic)
+- [UDP chat](https://github.com/Sergeydigl3/udp-chat-tui)
 
 ### [cpp-best-practices/game_jam](https://github.com/cpp-best-practices/game_jam)
 
