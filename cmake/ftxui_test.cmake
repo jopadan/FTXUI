@@ -13,6 +13,7 @@ add_executable(ftxui-tests
   src/ftxui/component/component_test.cpp
   src/ftxui/component/component_test.cpp
   src/ftxui/component/container_test.cpp
+  src/ftxui/component/dropdown_test.cpp
   src/ftxui/component/hoverable_test.cpp
   src/ftxui/component/input_test.cpp
   src/ftxui/component/menu_test.cpp
@@ -40,6 +41,7 @@ add_executable(ftxui-tests
   src/ftxui/dom/hyperlink_test.cpp
   src/ftxui/dom/linear_gradient_test.cpp
   src/ftxui/dom/scroll_indicator_test.cpp
+  src/ftxui/dom/selection_test.cpp
   src/ftxui/dom/separator_test.cpp
   src/ftxui/dom/spinner_test.cpp
   src/ftxui/dom/table_test.cpp
