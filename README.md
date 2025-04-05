@@ -109,6 +109,7 @@ Element can become flexible using the the `flex` decorator.
 
 An element can be decorated using the functions:
   - `bold`
+  - `italic`
   - `dim`
   - `inverted`
   - `underlined`
@@ -371,7 +372,7 @@ include(FetchContent)
 
 FetchContent_Declare(ftxui
   GIT_REPOSITORY https://github.com/ArthurSonzogni/ftxui
-  GIT_TAG v5.0.0
+  GIT_TAG v6.0.2
 )
 
 FetchContent_GetProperties(ftxui)
@@ -387,7 +388,7 @@ If you don't, FTXUI may be used from the following packages:
 - [conan.io](https://conan.io/center/ftxui)
 - [openSUSE](https://build.opensuse.org/package/show/devel:libraries:c_c++/ftxui)
 - 
-[![Packaging status](https://repology.org/badge/vertical-allrepos/ftxui.svg)](https://repology.org/project/ftxui/versions)
+[![Packaging status](https://repology.org/badge/vertical-allrepos/libftxui.svg)](https://repology.org/project/libftxui/versions)
 
 If you choose to build and link FTXUI yourself, `ftxui-component` must be first in the linking order relative to the other FTXUI libraries, i.e.
 ```bash

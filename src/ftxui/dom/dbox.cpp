@@ -23,7 +23,6 @@ class DBox : public Node {
   void ComputeRequirement() override {
     requirement_ = Requirement{};
     for (auto& child : children_) {
-
       child->ComputeRequirement();
 
       // Propagate the focused requirement.
@@ -76,6 +75,7 @@ class DBox : public Node {
             acc->bold = pixel.bold;
             acc->dim = pixel.dim;
             acc->inverted = pixel.inverted;
+            acc->italic = pixel.italic;
             acc->underlined = pixel.underlined;
             acc->underlined_double = pixel.underlined_double;
             acc->strikethrough = pixel.strikethrough;
