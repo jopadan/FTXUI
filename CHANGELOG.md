@@ -1,8 +1,53 @@
 Changelog
 =========
 
-Development
------------
+Next
+====
+
+### Doc
+- Fix broken Doxygen output. See @markmandel in #1029.
+- Use Doxygen awesome. Add our own theme.
+- Break the documentation into several pages.
+
+
+6.1.9 (2025-05-07)
+------------
+
+### Build
+If all goes well (pending), ftxui should appear in the Bazel central repository.
+It can be imported into your project using the following lines:
+
+**MODULE.bazel**
+```bazel
+bazel_dep(name = "ftxui", version = "6.1.9")
+```
+
+Thanks @robinlinden and @kcc for the reviews.
+
+### dom
+- Bugfix: Restore the `dbox` behavior from ftxui 5.0.0. To apply bgcolor
+  blending between the two layers, a new `dboxBlend` will be added.
+
+6.1.8 (2025-05-01)
+------------------
+
+### Build
+- Feature: Support `bazel` build system. See #1032.
+  Proposed by Kostya Serebryany @kcc
+
+  **BUILD.bazel**
+  ```bazel
+  deps = [
+    // Depend on the whole library:
+    "@ftxui//:ftxui",
+
+    // Choose a specific submodule:
+    "@ftxui//:component",
+    "@ftxui//:dom",
+    "@ftxui//:screen",
+  ]
+  ```
+
 ### Component
 - Bugfix: Fix a crash with ResizeableSplit. See #1023.
   - Clamp screen size to terminal size.
