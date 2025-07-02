@@ -346,9 +346,9 @@ void AnimationListener(std::atomic<bool>* quit, Sender<Task> out) {
 
 }  // namespace
 
-ScreenInteractive::ScreenInteractive(int dimx,
+ScreenInteractive::ScreenInteractive(Dimension dimension,
+                                     int dimx,
                                      int dimy,
-                                     Dimension dimension,
                                      bool use_alternative_screen)
     : Screen(dimx, dimy),
       dimension_(dimension),
@@ -359,14 +359,13 @@ ScreenInteractive::ScreenInteractive(int dimx,
 // static
 ScreenInteractive ScreenInteractive::FixedSize(int dimx, int dimy) {
   return {
+      Dimension::Fixed,
       dimx,
       dimy,
-      Dimension::Fixed,
-      false,
+      /*use_alternative_screen=*/false,
   };
 }
 
-/// @ingroup component
 /// Create a ScreenInteractive taking the full terminal size. This is using the
 /// alternate screen buffer to avoid messing with the terminal content.
 /// @note This is the same as `ScreenInteractive::FullscreenAlternateScreen()`
@@ -375,54 +374,59 @@ ScreenInteractive ScreenInteractive::Fullscreen() {
   return FullscreenAlternateScreen();
 }
 
-/// @ingroup component
 /// Create a ScreenInteractive taking the full terminal size. The primary screen
 /// buffer is being used. It means if the terminal is resized, the previous
 /// content might mess up with the terminal content.
 // static
 ScreenInteractive ScreenInteractive::FullscreenPrimaryScreen() {
+  auto terminal = Terminal::Size();
   return {
-      0,
-      0,
-      Dimension::Fullscreen,
-      false,
+    Dimension::Fullscreen,
+    terminal.dimx,
+    terminal.dimy,
+    /*use_alternative_screen=*/false,
   };
 }
 
-/// @ingroup component
 /// Create a ScreenInteractive taking the full terminal size. This is using the
 /// alternate screen buffer to avoid messing with the terminal content.
 // static
 ScreenInteractive ScreenInteractive::FullscreenAlternateScreen() {
+  auto terminal = Terminal::Size();
   return {
-      0,
-      0,
       Dimension::Fullscreen,
-      true,
+      terminal.dimx,
+      terminal.dimy,
+      /*use_alternative_screen=*/true,
   };
 }
 
+/// Create a ScreenInteractive whose width match the terminal output width and
+/// the height matches the component being drawn.
 // static
 ScreenInteractive ScreenInteractive::TerminalOutput() {
+  auto terminal = Terminal::Size();
   return {
-      0,
-      0,
       Dimension::TerminalOutput,
-      false,
+      terminal.dimx,
+      terminal.dimy, // Best guess.
+      /*use_alternative_screen=*/false,
   };
 }
 
+/// Create a ScreenInteractive whose width and height match the component being
+/// drawn.
 // static
 ScreenInteractive ScreenInteractive::FitComponent() {
+  auto terminal = Terminal::Size();
   return {
-      0,
-      0,
       Dimension::FitComponent,
+      terminal.dimx, // Best guess.
+      terminal.dimy, // Best guess.
       false,
   };
 }
 
-/// @ingroup component
 /// @brief Set whether mouse is tracked and events reported.
 /// called outside of the main loop. E.g `ScreenInteractive::Loop(...)`.
 /// @param enable Whether to enable mouse event tracking.
@@ -444,7 +448,6 @@ void ScreenInteractive::TrackMouse(bool enable) {
 
 /// @brief Add a task to the main loop.
 /// It will be executed later, after every other scheduled tasks.
-/// @ingroup component
 void ScreenInteractive::Post(Task task) {
   // Task/Events sent toward inactive screen or screen waiting to become
   // inactive are dropped.
@@ -457,7 +460,6 @@ void ScreenInteractive::Post(Task task) {
 
 /// @brief Add an event to the main loop.
 /// It will be executed later, after every other scheduled events.
-/// @ingroup component
 void ScreenInteractive::PostEvent(Event event) {
   Post(event);
 }
@@ -479,7 +481,6 @@ void ScreenInteractive::RequestAnimationFrame() {
 /// @brief Try to get the unique lock about behing able to capture the mouse.
 /// @return A unique lock if the mouse is not already captured, otherwise a
 /// null.
-/// @ingroup component
 CapturedMouse ScreenInteractive::CaptureMouse() {
   if (mouse_captured) {
     return nullptr;
@@ -491,14 +492,12 @@ CapturedMouse ScreenInteractive::CaptureMouse() {
 
 /// @brief Execute the main loop.
 /// @param component The component to draw.
-/// @ingroup component
 void ScreenInteractive::Loop(Component component) {  // NOLINT
   class Loop loop(this, std::move(component));
   loop.Run();
 }
 
 /// @brief Return whether the main loop has been quit.
-/// @ingroup component
 bool ScreenInteractive::HasQuitted() {
   return task_receiver_->HasQuitted();
 }
@@ -930,7 +929,7 @@ void ScreenInteractive::Draw(Component component) {
       break;
   }
 
-  const bool resized = (dimx != dimx_) || (dimy != dimy_);
+  const bool resized = frame_count_ == 0 || (dimx != dimx_) || (dimy != dimy_);
   ResetCursorPosition();
   std::cout << ResetPosition(/*clear=*/resized);
 
@@ -1013,6 +1012,7 @@ void ScreenInteractive::Draw(Component component) {
   Flush();
   Clear();
   frame_valid_ = true;
+  frame_count_++;
 }
 
 // private
@@ -1022,13 +1022,11 @@ void ScreenInteractive::ResetCursorPosition() {
 }
 
 /// @brief Return a function to exit the main loop.
-/// @ingroup component
 Closure ScreenInteractive::ExitLoopClosure() {
   return [this] { Exit(); };
 }
 
 /// @brief Exit the main loop.
-/// @ingroup component
 void ScreenInteractive::Exit() {
   Post([this] { ExitNow(); });
 }
